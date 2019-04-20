@@ -21,7 +21,6 @@
 		4CEC746F21B35954004F7371 /* CollectionViewTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEC746E21B35954004F7371 /* CollectionViewTestTests.swift */; };
 		4CEC747A21B35954004F7371 /* CollectionViewTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEC747921B35954004F7371 /* CollectionViewTestUITests.swift */; };
 		4CEC748821B35ACF004F7371 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEC748721B35ACF004F7371 /* CollectionViewCell.swift */; };
-		4CF2998A21E695F1003A3A5D /* CollectionViewCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF2998921E695F1003A3A5D /* CollectionViewCell1.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,7 +77,6 @@
 		4CEC747921B35954004F7371 /* CollectionViewTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTestUITests.swift; sourceTree = "<group>"; };
 		4CEC747B21B35954004F7371 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CEC748721B35ACF004F7371 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
-		4CF2998921E695F1003A3A5D /* CollectionViewCell1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell1.swift; sourceTree = "<group>"; };
 		6BB8419EDDA62E081ED7A442 /* Pods-CollectionViewTestUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CollectionViewTestUITests.release.xcconfig"; path = "Target Support Files/Pods-CollectionViewTestUITests/Pods-CollectionViewTestUITests.release.xcconfig"; sourceTree = "<group>"; };
 		8ABAD0B51AD921DE6355B3A3 /* Pods-CollectionViewTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CollectionViewTest.debug.xcconfig"; path = "Target Support Files/Pods-CollectionViewTest/Pods-CollectionViewTest.debug.xcconfig"; sourceTree = "<group>"; };
 		DE7204045FAA3193AC2E14AA /* Pods_CollectionViewTestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CollectionViewTestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,7 +139,6 @@
 				4CEC745921B35954004F7371 /* AppDelegate.swift */,
 				4CEC745B21B35954004F7371 /* ViewController.swift */,
 				4CEC745D21B35954004F7371 /* Main.storyboard */,
-				4CF2998921E695F1003A3A5D /* CollectionViewCell1.swift */,
 				4CE607E521D1BC460092E758 /* NotesViewController.swift */,
 				4C49ECB721B4CED00073B010 /* ColorViewController.swift */,
 				4C49ECB521B3C7AF0073B010 /* GalleryViewController.swift */,
@@ -435,7 +432,6 @@
 				4CEC745A21B35954004F7371 /* AppDelegate.swift in Sources */,
 				4C49ECB621B3C7AF0073B010 /* GalleryViewController.swift in Sources */,
 				4CE607E621D1BC460092E758 /* NotesViewController.swift in Sources */,
-				4CF2998A21E695F1003A3A5D /* CollectionViewCell1.swift in Sources */,
 				4C49ECB421B37C6C0073B010 /* CloudViewController.swift in Sources */,
 				4C49ECB821B4CED00073B010 /* ColorViewController.swift in Sources */,
 				4CEC748821B35ACF004F7371 /* CollectionViewCell.swift in Sources */,
