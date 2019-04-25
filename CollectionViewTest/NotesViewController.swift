@@ -168,7 +168,7 @@ class NotesViewController: UIViewController {
     func updateNotes() {
         
         DispatchQueue.main.async {
-            let format = self.notesTextView.text as! String
+            let format = self.notesTextView.text!
             let format1 = format.replacingOccurrences(of: " ", with: "+")
             let format2 = format1.replacingOccurrences(of: "\n", with: "%0A")
             print(format2)

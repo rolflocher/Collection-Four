@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource{
     
@@ -27,6 +28,16 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Auth.auth().signInAnonymously { (result, error) in
+            if let res = result {
+                print(res)
+            }
+            else {
+                print( error! )
+            }
+        }
+        
         collectionView.dataSource=self
         collectionView.delegate=self
         

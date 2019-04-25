@@ -102,9 +102,8 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IXM-0e-XEY">
                                 <rect key="frame" x="0.0" y="533.5" width="375" height="133.5"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zp0-GU-JIq">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zp0-GU-JIq">
                                 <rect key="frame" x="16" y="20" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Return"/>
                                 <connections>
                                     <segue destination="BYZ-38-t0r" kind="show" id="UOe-6u-MCm"/>
@@ -134,6 +133,7 @@
                             <constraint firstItem="juy-Mo-e1E" firstAttribute="top" secondItem="b9Q-xC-Dg0" secondAttribute="top" id="5rp-Ru-QT6"/>
                             <constraint firstItem="FVu-qt-Zva" firstAttribute="height" secondItem="ZVG-2y-dYh" secondAttribute="height" id="5yh-NY-7iZ"/>
                             <constraint firstItem="IXM-0e-XEY" firstAttribute="height" secondItem="ZVG-2y-dYh" secondAttribute="height" id="6Tg-qI-q8n"/>
+                            <constraint firstItem="zp0-GU-JIq" firstAttribute="leading" secondItem="b9Q-xC-Dg0" secondAttribute="leading" constant="16" id="6q9-Sp-Wkb"/>
                             <constraint firstItem="fcf-tP-AuX" firstAttribute="trailing" secondItem="b9Q-xC-Dg0" secondAttribute="trailing" id="9bf-JV-Wah"/>
                             <constraint firstItem="vMH-NA-zSY" firstAttribute="leading" secondItem="b9Q-xC-Dg0" secondAttribute="leading" id="DGG-oV-C0Q"/>
                             <constraint firstItem="IXM-0e-XEY" firstAttribute="leading" secondItem="b9Q-xC-Dg0" secondAttribute="leading" id="J8K-aK-xPX"/>
@@ -144,6 +144,7 @@
                             <constraint firstItem="vMH-NA-zSY" firstAttribute="height" secondItem="ZVG-2y-dYh" secondAttribute="height" id="Udk-Al-fyb"/>
                             <constraint firstItem="FVu-qt-Zva" firstAttribute="leading" secondItem="b9Q-xC-Dg0" secondAttribute="leading" id="Uil-OQ-3hk"/>
                             <constraint firstItem="b9Q-xC-Dg0" firstAttribute="bottom" secondItem="IXM-0e-XEY" secondAttribute="bottom" id="X0R-mJ-MrP"/>
+                            <constraint firstItem="zp0-GU-JIq" firstAttribute="top" secondItem="b9Q-xC-Dg0" secondAttribute="top" id="XzZ-Dg-S1s"/>
                             <constraint firstItem="vMH-NA-zSY" firstAttribute="top" secondItem="fcf-tP-AuX" secondAttribute="bottom" id="Yfe-e7-RMU"/>
                             <constraint firstItem="IXM-0e-XEY" firstAttribute="trailing" secondItem="b9Q-xC-Dg0" secondAttribute="trailing" id="Ym1-EH-nBS"/>
                             <constraint firstItem="FVu-qt-Zva" firstAttribute="top" secondItem="RKt-UJ-AS0" secondAttribute="bottom" constant="34.5" id="aLE-Fx-zt8"/>
@@ -221,9 +222,8 @@
                                     <constraint firstAttribute="width" constant="375" id="eMa-jO-WTI"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="if6-xO-4CI">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="if6-xO-4CI">
                                 <rect key="frame" x="16" y="20" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Return"/>
                                 <connections>
                                     <segue destination="BYZ-38-t0r" kind="show" id="WTu-G2-bbC"/>
@@ -241,8 +241,10 @@
                         <constraints>
                             <constraint firstItem="zzS-yt-14H" firstAttribute="top" secondItem="kMR-aM-oQh" secondAttribute="top" id="0Nr-Tx-cX7"/>
                             <constraint firstItem="ASb-pU-BhS" firstAttribute="trailing" secondItem="rZ5-FQ-0cR" secondAttribute="trailing" constant="22" id="Mk1-C4-Z1o"/>
+                            <constraint firstItem="if6-xO-4CI" firstAttribute="top" secondItem="ASb-pU-BhS" secondAttribute="top" id="agl-Er-1tc"/>
                             <constraint firstItem="zzS-yt-14H" firstAttribute="trailing" secondItem="ASb-pU-BhS" secondAttribute="trailing" id="cHS-wk-itm"/>
                             <constraint firstItem="rZ5-FQ-0cR" firstAttribute="top" secondItem="ASb-pU-BhS" secondAttribute="top" id="fgw-nS-Q2K"/>
+                            <constraint firstItem="if6-xO-4CI" firstAttribute="leading" secondItem="ASb-pU-BhS" secondAttribute="leading" constant="16" id="ldZ-uT-9Ki"/>
                             <constraint firstItem="zzS-yt-14H" firstAttribute="bottom" secondItem="ASb-pU-BhS" secondAttribute="bottom" id="o9M-Jf-Aug"/>
                             <constraint firstItem="zzS-yt-14H" firstAttribute="leading" secondItem="ASb-pU-BhS" secondAttribute="leading" id="wrS-Ez-Opk"/>
                         </constraints>
@@ -293,7 +295,7 @@
                                         </view>
                                         <size key="customSize" width="100" height="100"/>
                                         <connections>
-                                            <outlet property="cellImageView" destination="g7U-EZ-LWz" id="XHv-SS-Fqn"/>
+                                            <outlet property="cellImageView" destination="g7U-EZ-LWz" id="ot8-tG-TSp"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -312,9 +314,8 @@
                                     <action selector="UploadButton:" destination="vQA-N7-mJF" eventType="touchUpInside" id="LVl-G1-1Ie"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nj6-bi-2C5">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nj6-bi-2C5">
                                 <rect key="frame" x="16" y="20" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Return"/>
                                 <connections>
                                     <action selector="returnButton:" destination="vQA-N7-mJF" eventType="primaryActionTriggered" id="f6B-qS-0l9"/>
@@ -337,7 +338,9 @@
                             <constraint firstItem="5gv-S3-9WX" firstAttribute="leading" secondItem="8Ld-OR-CGq" secondAttribute="leading" id="1d2-tv-gvF"/>
                             <constraint firstItem="8Ld-OR-CGq" firstAttribute="bottom" secondItem="da3-hQ-MQD" secondAttribute="bottom" constant="32" id="25k-gO-Ev1"/>
                             <constraint firstItem="KVI-YP-Dot" firstAttribute="top" secondItem="8Ld-OR-CGq" secondAttribute="top" id="7fa-ky-dTS"/>
+                            <constraint firstItem="nj6-bi-2C5" firstAttribute="top" secondItem="8Ld-OR-CGq" secondAttribute="top" id="NC4-X7-dsp"/>
                             <constraint firstItem="da3-hQ-MQD" firstAttribute="leading" secondItem="8Ld-OR-CGq" secondAttribute="leading" constant="16" id="Nyk-bD-Yov"/>
+                            <constraint firstItem="nj6-bi-2C5" firstAttribute="leading" secondItem="8Ld-OR-CGq" secondAttribute="leading" constant="16" id="OLC-AB-N4O"/>
                             <constraint firstItem="IOE-wW-2CG" firstAttribute="leading" secondItem="8Ld-OR-CGq" secondAttribute="leading" constant="16" id="UBa-Gv-RHY"/>
                             <constraint firstItem="8Ld-OR-CGq" firstAttribute="trailing" secondItem="ajk-aU-eef" secondAttribute="trailing" constant="16" id="Xv9-Y4-z3N"/>
                             <constraint firstItem="5gv-S3-9WX" firstAttribute="bottom" secondItem="8Ld-OR-CGq" secondAttribute="bottom" id="YFM-o5-btq"/>
@@ -368,6 +371,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="IPA-xE-kcQ"/>
+        <segue reference="UOe-6u-MCm"/>
     </inferredMetricsTieBreakers>
 </document>
