@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>271553644750-ohateqd36rfq18f2g4p1u089t90k40fg.apps.googleusercontent.com</string>
+	<string>271553644750-rsmdbm3klr670epqcnh8c0uqvdbpssoa.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.271553644750-ohateqd36rfq18f2g4p1u089t90k40fg</string>
+	<string>com.googleusercontent.apps.271553644750-rsmdbm3klr670epqcnh8c0uqvdbpssoa</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBBritgSHDjzispm6ffny1ROqA8qiC-ONU</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>rolflocher.CollectionViewTest</string>
+	<string>rolflocher.CollectionViewTestX</string>
 	<key>PROJECT_ID</key>
 	<string>collection-four</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:271553644750:ios:ce48ee6415827bcf</string>
+	<string>1:271553644750:ios:cc9c858f7033fba7</string>
 	<key>DATABASE_URL</key>
 	<string>https://collection-four.firebaseio.com</string>
 </dict>

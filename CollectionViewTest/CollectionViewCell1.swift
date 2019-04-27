@@ -11,4 +11,6 @@ import UIKit
 class CollectionViewCell1: UICollectionViewCell {
     
     @IBOutlet var cellImageView: UIImageView!
+    
+    
 }
