@@ -320,22 +320,22 @@
                                     <constraint firstAttribute="width" constant="337" id="Rqs-Ji-2MV"/>
                                 </constraints>
                             </progressView>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nj6-bi-2C5">
-                                <rect key="frame" x="16" y="766" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nj6-bi-2C5">
+                                <rect key="frame" x="16" y="759" width="46" height="30"/>
                                 <state key="normal" title="Return"/>
                                 <connections>
                                     <action selector="returnButton:" destination="vQA-N7-mJF" eventType="primaryActionTriggered" id="f6B-qS-0l9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KVI-YP-Dot">
-                                <rect key="frame" x="319" y="766" width="34" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KVI-YP-Dot">
+                                <rect key="frame" x="319" y="759" width="34" height="30"/>
                                 <state key="normal" title="Save"/>
                                 <connections>
                                     <action selector="saveButtonPressed:" destination="vQA-N7-mJF" eventType="primaryActionTriggered" id="rYL-G5-c9Y"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Am-am-Xmi">
-                                <rect key="frame" x="165" y="766" width="45" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Am-am-Xmi">
+                                <rect key="frame" x="165" y="759" width="45" height="30"/>
                                 <state key="normal" title="Delete"/>
                                 <connections>
                                     <action selector="deleteTapped:" destination="vQA-N7-mJF" eventType="primaryActionTriggered" id="hQS-VI-Eax"/>
@@ -351,9 +351,11 @@
                             <constraint firstItem="8Ld-OR-CGq" firstAttribute="bottom" secondItem="UKX-ht-jhc" secondAttribute="bottom" constant="20" id="EWw-5a-4kB"/>
                             <constraint firstItem="5gv-S3-9WX" firstAttribute="top" secondItem="ajk-aU-eef" secondAttribute="bottom" constant="4" id="F1P-K5-46F"/>
                             <constraint firstItem="ajk-aU-eef" firstAttribute="top" secondItem="8Ld-OR-CGq" secondAttribute="top" constant="3" id="HrV-sm-rxS"/>
+                            <constraint firstItem="nj6-bi-2C5" firstAttribute="top" secondItem="UKX-ht-jhc" secondAttribute="bottom" constant="1" id="Jnc-gP-u7L"/>
                             <constraint firstItem="da3-hQ-MQD" firstAttribute="leading" secondItem="8Ld-OR-CGq" secondAttribute="leading" constant="16" id="Nyk-bD-Yov"/>
                             <constraint firstItem="nj6-bi-2C5" firstAttribute="leading" secondItem="8Ld-OR-CGq" secondAttribute="leading" constant="16" id="OLC-AB-N4O"/>
                             <constraint firstItem="IOE-wW-2CG" firstAttribute="leading" secondItem="8Ld-OR-CGq" secondAttribute="leading" constant="16" id="UBa-Gv-RHY"/>
+                            <constraint firstItem="5Am-am-Xmi" firstAttribute="top" secondItem="UKX-ht-jhc" secondAttribute="bottom" constant="1" id="XfC-09-iVd"/>
                             <constraint firstItem="8Ld-OR-CGq" firstAttribute="trailing" secondItem="ajk-aU-eef" secondAttribute="trailing" constant="16" id="Xv9-Y4-z3N"/>
                             <constraint firstItem="5gv-S3-9WX" firstAttribute="bottom" secondItem="aQr-jn-ix3" secondAttribute="bottom" constant="-68" id="YFM-o5-btq"/>
                             <constraint firstItem="5gv-S3-9WX" firstAttribute="trailing" secondItem="8Ld-OR-CGq" secondAttribute="trailing" id="aHW-M5-PV1"/>
@@ -361,6 +363,7 @@
                             <constraint firstItem="UKX-ht-jhc" firstAttribute="centerX" secondItem="aQr-jn-ix3" secondAttribute="centerX" id="o2i-BP-8ef"/>
                             <constraint firstItem="da3-hQ-MQD" firstAttribute="top" secondItem="IOE-wW-2CG" secondAttribute="bottom" constant="13" id="of0-Ah-BMo"/>
                             <constraint firstItem="5gv-S3-9WX" firstAttribute="top" secondItem="aQr-jn-ix3" secondAttribute="top" constant="81" id="vJD-7h-MI6"/>
+                            <constraint firstItem="KVI-YP-Dot" firstAttribute="top" secondItem="UKX-ht-jhc" secondAttribute="bottom" constant="1" id="xHD-Of-awX"/>
                             <constraint firstItem="8Ld-OR-CGq" firstAttribute="trailing" secondItem="KVI-YP-Dot" secondAttribute="trailing" constant="22" id="y7x-oB-YVZ"/>
                             <constraint firstItem="IOE-wW-2CG" firstAttribute="top" secondItem="8Ld-OR-CGq" secondAttribute="top" constant="3" id="yd5-8D-qxc"/>
                         </constraints>

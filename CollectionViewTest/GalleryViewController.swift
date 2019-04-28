@@ -29,38 +29,38 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
         }
         
-        GlobalImages.remove(at: currentIndex)
+        //GlobalImages.remove(at: currentIndex)
         
-        UIView.animate(withDuration: 1, animations: {
-            self.collectionView.cellForItem(at: IndexPath.init(row: self.globalNames.firstIndex(of: self.currentID)!, section: 0))?.alpha = 0
-        }) { (result) in
-            self.collectionView.deleteItems(at: [IndexPath.init(row: self.currentIndex, section: 0)])
-            self.globalNames.remove(at: self.currentIndex)
-            UserDefaults.standard.setValue(self.globalNames, forKey: "imageNames")
-        }
+//        UIView.animate(withDuration: 1, animations: {
+//            self.collectionView.cellForItem(at: IndexPath.init(row: self.globalNames.firstIndex(of: self.currentID)!, section: 0))?.alpha = 0
+//        }) { (result) in
+//            self.collectionView.deleteItems(at: [IndexPath.init(row: self.currentIndex, section: 0)])
+//            self.globalNames.remove(at: self.currentIndex)
+//            UserDefaults.standard.setValue(self.globalNames, forKey: "imageNames")
+//        }
         
-        let storage = Storage.storage()
-        let storageRef = storage.reference()
-        let imageRef = storageRef.child("images/\(currentID).jpg")
-        imageRef.delete { error in
-            if let error = error {
-                print(error)
-            } else {
-                print("deleted image \(self.currentID)")
-            }
-        }
+//        let storage = Storage.storage()
+//        let storageRef = storage.reference()
+//        let imageRef = storageRef.child("images/\(currentID).jpg")
+//        imageRef.delete { error in
+//            if let error = error {
+//                print(error)
+//            } else {
+//                print("deleted image \(self.currentID)")
+//            }
+//        }
         
-        let imagePath = documentsPath.appendingPathComponent(self.currentID)
-        guard fileManager.fileExists(atPath: imagePath.path) else {
-            print("Image does not exist at path: \(imagePath)")
-            return
-        }
-        do {
-            try fileManager.removeItem(at: imagePath)
-            print("\(self.currentID) was deleted.")
-        } catch let error as NSError {
-            print("Could not delete \(self.currentID): \(error)")
-        }
+//        let imagePath = documentsPath.appendingPathComponent(self.currentID)
+//        guard fileManager.fileExists(atPath: imagePath.path) else {
+//            print("Image does not exist at path: \(imagePath)")
+//            return
+//        }
+//        do {
+//            try fileManager.removeItem(at: imagePath)
+//            print("\(self.currentID) was deleted.")
+//        } catch let error as NSError {
+//            print("Could not delete \(self.currentID): \(error)")
+//        }
         
         hideFullImage()
     }
@@ -119,9 +119,12 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.present(imagePicker, animated: true, completion: nil)
     }
     
+    var isUploading = false
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         if let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage {
+            self.isUploading = true
             DispatchQueue.global(qos: .background).async {
                 self.uploadImage(image: image)
             }
@@ -142,8 +145,8 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
     func deleteOldRecords(id: String, index : Int, deletions: Int) {
         
         //globalNames.remove(at: index)
-        GlobalImages.remove(at: index-deletions)
-        self.collectionView.deleteItems(at: [IndexPath.init(row: index-deletions, section: 0)])
+        GlobalImages.remove(at: index)//-deletions)
+        self.collectionView.deleteItems(at: [IndexPath.init(row: index, section: 0)])
 //        isDeleting = true
 //        UIView.animate(withDuration: 1, animations: {
 //            self.collectionView.cellForItem(at: IndexPath.init(row: index, section: 0))?.alpha = 0
@@ -166,44 +169,51 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
         
     }
     
+    var isFirstLoad = true
+    
     func getAllImages() {
-        db.collection("imageMetadata").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
+        
+        db.collection("imageMetadata").order(by: "timestamp", descending: false).addSnapshotListener { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else {
+                print("Error fetching documents: \(error!)")
+                return
+            }
+            self.progressView.setProgress(0.0, animated: true)
+            var progress : Float = 0
+            
+            var IDList = [String]()
+            for document in documents {
+                IDList.append(document.documentID)
+            }
+            
+            var count = self.globalNames.count
+            var deletions = 0
+            //var killList = [Int]()
+            for name in self.globalNames.reversed() {
                 
-                let storage = Storage.storage()
-                self.progressView.setProgress(0.0, animated: true)
-                var progress : Float = 0
-                
-                var IDList = [String]()
-                for document in querySnapshot!.documents {
-                    IDList.append(document.documentID)
+                if !IDList.contains(name) {
+                    
+                    self.deleteOldRecords(id: name, index: count, deletions: deletions)
+                    deletions += 1
+                }
+                count -= 1
+            }
+            
+            self.globalNames.removeAll(where: {!IDList.contains($0)})
+            
+            let storage = Storage.storage()
+            for document in IDList {
+                progress+=1
+                if self.globalNames.contains(document) {
+                    continue
+                }
+                else {
+                    //self.globalNames.append(document)
                 }
                 
-                var count = 0
-                var deletions = 0
-                for name in self.globalNames {
-                    
-                    if !IDList.contains(name) {
-                        
-                        self.deleteOldRecords(id: name, index: count, deletions: deletions)
-                        deletions += 1
-                    }
-                    count += 1
-                }
+                let pathReference = storage.reference(withPath: "thumbnails/\(document).jpg")
                 
-                self.globalNames.removeAll(where: {!IDList.contains($0)})
-                for document in IDList {
-                    progress+=1
-                    if self.globalNames.contains(document) {
-                        continue
-                    }
-                    else {
-                        //self.globalNames.append(document)
-                    }
-                    
-                    let pathReference = storage.reference(withPath: "thumbnails/\(document).jpg")
+                if self.isFirstLoad {
                     
                     pathReference.getData(maxSize: 1 * 1024 * 1024) { data, error in
                         if let error = error {
@@ -240,20 +250,147 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
                             }
                             
                             
-//                            if Int(progress) == querySnapshot!.documents.count {
-//                                UserDefaults.standard.setValue(self.globalNames, forKey: "imageNames")
-//                            }
+                            //                            if Int(progress) == querySnapshot!.documents.count {
+                            //                                UserDefaults.standard.setValue(self.globalNames, forKey: "imageNames")
+                            //                            }
                         }
                     }
                 }
-                self.globalNames = IDList
-                UserDefaults.standard.setValue(self.globalNames, forKey: "imageNames")
+                else {
+                    DispatchQueue.main.asyncAfter(deadline: .now()+5, execute: {
+                        pathReference.getData(maxSize: 1 * 1024 * 1024) { data, error in
+                            if let error = error {
+                                print(error)
+                                self.getAllImages()
+                            } else {
+                                let image = UIImage(data: data!)!
+                                
+                                do {
+                                    let filePath = self.documentsPath.appendingPathComponent(document)
+                                    try data!.write(to: filePath)
+                                    print("\(document) was saved.")
+                                } catch let error as NSError {
+                                    print("\(document) could not be saved: \(error)")
+                                }
+                                
+                                self.progressView.setProgress(progress/Float(querySnapshot!.documents.count), animated: true)
+                                
+                                //self.globalNames.append(document)
+                                if self.isDeleting {
+                                    DispatchQueue.main.asyncAfter(deadline: .now()+1, execute: {
+                                        self.GlobalImages.append(image)
+                                        let indexPath = IndexPath.init(row: self.GlobalImages.count-1, section: 0)
+                                        self.collectionView.insertItems(at: [indexPath])
+                                    })
+                                }
+                                else {
+                                    self.GlobalImages.append(image)
+                                    let indexPath = IndexPath.init(row: self.GlobalImages.count-1, section: 0)
+                                    self.collectionView.insertItems(at: [indexPath])
+                                }
+                            }
+                        }
+                    })
+                }
+                
             }
+            self.isFirstLoad = false
+            self.globalNames = IDList
+            UserDefaults.standard.setValue(self.globalNames, forKey: "imageNames")
         }
+        
+//
+//        db.collection("imageMetadata").getDocuments() { (querySnapshot, err) in
+//            if let err = err {
+//                print("Error getting documents: \(err)")
+//            } else {
+//
+//
+//                self.progressView.setProgress(0.0, animated: true)
+//                var progress : Float = 0
+//
+//                var IDList = [String]()
+//                for document in querySnapshot!.documents {
+//                    IDList.append(document.documentID)
+//                }
+//
+//                var count = 0
+//                var deletions = 0
+//                for name in self.globalNames {
+//
+//                    if !IDList.contains(name) {
+//
+//                        self.deleteOldRecords(id: name, index: count, deletions: deletions)
+//                        deletions += 1
+//                    }
+//                    count += 1
+//                }
+//
+//                self.globalNames.removeAll(where: {!IDList.contains($0)})
+//
+//                let storage = Storage.storage()
+//
+//                for document in IDList {
+//                    progress+=1
+//                    if self.globalNames.contains(document) {
+//                        continue
+//                    }
+//                    else {
+//                        //self.globalNames.append(document)
+//                    }
+//
+//                    let pathReference = storage.reference(withPath: "thumbnails/\(document).jpg")
+//
+//                    pathReference.getData(maxSize: 1 * 1024 * 1024) { data, error in
+//                        if let error = error {
+//                            print(error)
+//                        } else {
+//                            let image = UIImage(data: data!)!
+//
+//                            do {
+//                                let filePath = self.documentsPath.appendingPathComponent(document)
+//
+//                                try data!.write(to: filePath)
+//
+//                                print("\(document) was saved.")
+//
+//                            } catch let error as NSError {
+//                                print("\(document) could not be saved: \(error)")
+//
+//                            }
+//
+//                            self.progressView.setProgress(progress/Float(querySnapshot!.documents.count), animated: true)
+//
+//                            //self.globalNames.append(document)
+//                            if self.isDeleting {
+//                                DispatchQueue.main.asyncAfter(deadline: .now()+1, execute: {
+//                                    self.GlobalImages.append(image)
+//                                    let indexPath = IndexPath.init(row: self.GlobalImages.count-1, section: 0)
+//                                    self.collectionView.insertItems(at: [indexPath])
+//                                })
+//                            }
+//                            else {
+//                                self.GlobalImages.append(image)
+//                                let indexPath = IndexPath.init(row: self.GlobalImages.count-1, section: 0)
+//                                self.collectionView.insertItems(at: [indexPath])
+//                            }
+//
+//
+////                            if Int(progress) == querySnapshot!.documents.count {
+////                                UserDefaults.standard.setValue(self.globalNames, forKey: "imageNames")
+////                            }
+//                        }
+//                    }
+//                }
+//                self.globalNames = IDList
+//                UserDefaults.standard.setValue(self.globalNames, forKey: "imageNames")
+//            }
+        
     }
+
     
     func uploadImage( image : UIImage ) {
-        
+        self.isFirstLoad = true
         var ref: DocumentReference? = nil
         ref = db.collection("imageMetadata").addDocument(data: [
             "thumbName" : "init",
@@ -261,21 +398,21 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
-                self.GlobalImages.removeLast()
+                //self.GlobalImages.removeLast()
             } else {
                 print("Document added with ID: \(ref!.documentID)")
-                
-                self.db.collection("imageMetadata").document(ref!.documentID).setData([
-                    "thumbName" : ref!.documentID,
-                    "timestamp" : Int(Date.timeIntervalSinceReferenceDate)
-                ])
+                //self.globalNames.append(ref!.documentID)
+//                self.db.collection("imageMetadata").document(ref!.documentID).setData([
+//                    "thumbName" : ref!.documentID,
+//                    "timestamp" : Int(Date.timeIntervalSinceReferenceDate)
+//                ])
                 
                 let storage = Storage.storage()
                 let storageRef = storage.reference().child("images/\(ref!.documentID).jpg")
                 let uploadTask = storageRef.putData(image.jpegData(compressionQuality: 1)!, metadata: nil) { (metadata, error) in
                     guard let metadata = metadata else {
                         print(error!)
-                        self.GlobalImages.removeLast()
+                        //self.GlobalImages.removeLast()
                         return
                     }
                 }
@@ -295,27 +432,27 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
                         print(error!)
                         return
                     }
-                    do {
-                        let filePath = self.documentsPath.appendingPathComponent(ref!.documentID)
-                        
-                        try thumb.write(to: filePath)
-                        print("\(ref!.documentID) was saved.")
-                        
-                    } catch let error as NSError {
-                        print("\(ref!.documentID) could not be saved: \(error)")
-                        
-                    }
+//                    do {
+//                        let filePath = self.documentsPath.appendingPathComponent(ref!.documentID)
+//
+//                        try thumb.write(to: filePath)
+//                        print("\(ref!.documentID) was saved.")
+//
+//                    } catch let error as NSError {
+//                        print("\(ref!.documentID) could not be saved: \(error)")
+//
+//                    }
                 }
                 uploadTask1.resume()
                 
-                self.globalNames.append(ref!.documentID)
-                UserDefaults.standard.setValue(self.globalNames, forKey: "imageNames")
+                //self.globalNames.append(ref!.documentID)
+                //UserDefaults.standard.setValue(self.globalNames, forKey: "imageNames")
             }
         }
     }
     
     func hasPreviousImages(){
-        //UserDefaults.standard.setValue([], forKey: "imageNames")
+        UserDefaults.standard.setValue([], forKey: "imageNames")
         if let nameArray = UserDefaults.standard.value(forKey: "imageNames") as? [String] {
             self.globalNames = nameArray
         }
@@ -337,6 +474,7 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
             count += 1
         }
         self.collectionView.reloadData()
+        
         getAllImages()
     }
     
@@ -355,6 +493,9 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         collectionView.dataSource=self
         collectionView.delegate=self
+        
+        
+        
         
         hasPreviousImages()
         
