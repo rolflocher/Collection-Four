@@ -7,190 +7,47 @@
 //
 
 import UIKit
+import Firebase
 
-class NotesViewController: UIViewController {
+class NotesViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet var notesTextView: UITextView!
     
-    @IBAction func getButton(_ sender: Any) {
-        getNotes()
-    }
+    let db = Firestore.firestore()
     
-    @IBAction func writeButton(_ sender: Any) {
-        updateNotes()
-    }
+    var cursorPos = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.notesTextView.isEditable = false
-        self.mayI()
-        //self.getNotes()
-        // Do any additional setup after loading the view.
-    }
-    
-    var isOccupied = true
-    var isFirstTime = true
-    
-    func mayI () {
-        let url = URL(string: "http://127.0.0.1:8000/notes/mayI")!
-        let request = URLRequest(url:url)
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
-            if let httpResponse = response as? HTTPURLResponse {
-                print(httpResponse.statusCode)
-                if httpResponse.statusCode == 200 {
-                    DispatchQueue.main.async {
-                        self.notesTextView.isEditable = true
-                    }
-                    self.isOccupied = false
-                    print("trying to start edit mode")
-                    self.getNotes()
-                    self.editing()
-                    
-                }
-                else {
-                    print("someone is already editing")
-                    self.isOccupied = true
-                    
-                    if self.isFirstTime {
-                        DispatchQueue.global(qos: .background).async {
-                            self.getNotesUntilLeave()
-                        }
-                        DispatchQueue.global(qos: .background).async {
-                            self.checkIfOccupied()
-                        }
-                        
-                        let alert = UIAlertController(title: "Notification", message: "Someone is already editing", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                        
-                        DispatchQueue.main.async{
-                            self.present(alert, animated: true)
-                        }
-                        self.notesTextView.isEditable = false
-                        self.isFirstTime = false
-                    }
-                }
+        notesTextView.delegate = self
+        db.collection("notes").addSnapshotListener { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else {
+                print("Error fetching documents: \(error!)")
+                return
             }
-            
-        })
-        task.resume()
-    }
-    var windowOK = false
-    
-    func checkWindow() {
-//        DispatchQueue.global(qos: .background).async {
-//            sleep(1)
-        print("checking window")
-        DispatchQueue.main.async {
-            self.windowOK = self.viewIfLoaded?.window != nil
-            
-            }
-    }
-    
-    func editing () {
-        self.checkWindow()
-        sleep(1)
-        print("got to editing")
-        while(self.windowOK) {
-            let url = URL(string: "http://127.0.0.1:8000/notes/here")!
-            let request = URLRequest(url:url)
-            let session = URLSession(configuration: URLSessionConfiguration.default)
-            let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
-            })
-            task.resume()
-            print("youre editing")
-            sleep(5)
-            self.updateNotes()
-            self.checkWindow()
-            
-        }
-    }
-    
-    func getNotesUntilLeave() {
-        self.checkWindow()
-        sleep(1)
-        while(self.windowOK && self.isOccupied == true) {
-            sleep(1)
-            print("getting notes")
-            self.getNotes()
-            self.checkWindow()
-            
-        }
-    }
-    
-    func checkIfOccupied () {
-        self.checkWindow()
-        sleep(1)
-        while(self.windowOK && self.isOccupied == true) {
-            print("checking if still occupied")
-            sleep(10)
-            self.mayI()
-            self.checkWindow()
-        }
-    }
-    
-    func getNotes() {
-        let url = URL(string: "http://127.0.0.1:8000/notes/")!
-        let request = URLRequest(url:url)
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
-            do{
-                guard let dataResponse = data,
-                    error == nil else {
-                        print(error?.localizedDescription ?? "Response Error")
-                        return }
-                let jsonResponse = try JSONSerialization.jsonObject(with:
-                    dataResponse, options: [])
+            self.notesTextView.text = documents[0]["content"] as? String
+            if let newPosition = self.notesTextView.position(from: self.notesTextView.beginningOfDocument, offset: self.cursorPos) {
                 
-                guard let jsonArray = jsonResponse as? [[String: Any]] else {
-                    print("fail")
-                    return
-                }
-                var message : String = ""
-                for x in 0..<jsonArray.count {
-                    let format1 = jsonArray[x]["fields"] as! [String:Any]
-                    message += format1["note_text"] as! String + "\n\n"
-                }
-                //print(message)
-                let formatFinal = message.replacingOccurrences(of: "+", with: " ")
-                let formatFinal2 = formatFinal.replacingOccurrences(of: "%0A", with: "\n")
-                DispatchQueue.main.async (execute: { () -> Void in
-                    self.notesTextView!.text = formatFinal2
-                })
-                
-            } catch let parsingError {
-                print("Error", parsingError)
+                self.notesTextView.selectedTextRange = self.notesTextView.textRange(from: newPosition, to: newPosition)
             }
-        })
-        task.resume()
-    }
-    
-    func updateNotes() {
-        
-        DispatchQueue.main.async {
-            let format = self.notesTextView.text!
-            let format1 = format.replacingOccurrences(of: " ", with: "+")
-            let format2 = format1.replacingOccurrences(of: "\n", with: "%0A")
-            print(format2)
-            let url = URL(string: "http://127.0.0.1:8000/notes/1/\(format2)/update")!
-            let request = URLRequest(url:url)
-            let session = URLSession(configuration: URLSessionConfiguration.default)
-            let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
-            })
-            task.resume()
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if let selectedRange = notesTextView.selectedTextRange {
+            
+            cursorPos = notesTextView.offset(from: notesTextView.beginningOfDocument, to: selectedRange.start)
+        }
+        db.collection("notes").document("text").setData([
+            "content" : textView.text ?? ""
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
     }
-    */
-
     
     
 }
