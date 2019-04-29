@@ -110,7 +110,6 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     var GlobalImages = [UIImage]()
     var globalNames = [String]()
-    var GlobalPkArray = [Int]()
     
     @IBAction @objc internal func UploadButton(_ sender: Any) {
         imagePicker.delegate = self
@@ -137,8 +136,8 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
-    let fileManager = FileManager.default
-    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    //let fileManager = FileManager.default
+    //let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     
     func downloadMult(idList: [String], count: Int) {
         
@@ -147,7 +146,7 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
             return
         }
         
-        if self.globalNames.contains(idList[count]) && self.globalNames.count != 0 {
+        if !self.globalNames.isEmpty && self.globalNames.contains(idList[count]) {
             downloadMult(idList: idList, count: count+1)
             return
         }
@@ -160,8 +159,8 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
                 print(error)
             } else {
                 let image = UIImage(data: data!)!
-                
-                self.progressView.setProgress(Float(count/idList.count-1), animated: true)
+                print(Float(count))
+                self.progressView.setProgress(Float((count+1)/idList.count), animated: true)
                 
                 self.GlobalImages.append(image)
                 let indexPath = IndexPath.init(row: self.GlobalImages.count-1, section: 0)
@@ -198,6 +197,10 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
             
             var IDList = [String]()
             for document in documents {
+                if document.data()["thumbName"] != nil {
+                    return
+                }
+                //print(document.data())
                 if !(document.data()["finishedUploading"] as! Bool) {
                     return
                 }
@@ -422,37 +425,42 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
     }
     
-    func hasPreviousImages(){
-        UserDefaults.standard.setValue([], forKey: "imageNames")
-        if let nameArray = UserDefaults.standard.value(forKey: "imageNames") as? [String] {
-            self.globalNames = nameArray
-        }
-        var count = 0
-        for name in globalNames {
-            let imagePath = documentsPath.appendingPathComponent(name).path
-            guard fileManager.fileExists(atPath: imagePath) else {
-                print("Image does not exist at path: \(imagePath)")
-                return
-            }
-            if let imageData = UIImage(contentsOfFile: imagePath) {
-                self.GlobalImages.append(imageData)
-                if count == globalNames.count-1 {
-                    
-                }
-            } else {
-                print("UIImage could not be created.")
-            }
-            count += 1
-        }
-        self.collectionView.reloadData()
-        
-        getAllImages()
-    }
+//    func hasPreviousImages(){
+//        UserDefaults.standard.setValue([], forKey: "imageNames")
+//        if let nameArray = UserDefaults.standard.value(forKey: "imageNames") as? [String] {
+//            self.globalNames = nameArray
+//        }
+//        var count = 0
+//        for name in globalNames {
+//            let imagePath = documentsPath.appendingPathComponent(name).path
+//            guard fileManager.fileExists(atPath: imagePath) else {
+//                print("Image does not exist at path: \(imagePath)")
+//                return
+//            }
+//            if let imageData = UIImage(contentsOfFile: imagePath) {
+//                self.GlobalImages.append(imageData)
+//                if count == globalNames.count-1 {
+//
+//                }
+//            } else {
+//                print("UIImage could not be created.")
+//            }
+//            count += 1
+//        }
+//        self.collectionView.reloadData()
+//
+//        getAllImages()
+//    }
     
     var numCells = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let settings = FirestoreSettings()
+        settings.isPersistenceEnabled = false
+        db.settings = settings
+        
         self.secondaryReturn.isHidden = true
         self.uploadButton.isHidden = false
         self.saveButton.isHidden = true
@@ -465,15 +473,13 @@ class GalleryViewController: UIViewController, UIImagePickerControllerDelegate, 
         collectionView.dataSource=self
         collectionView.delegate=self
         
-        
+        let layout = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.sectionInset = UIEdgeInsets.init(top: 0,left: 5,bottom: 0,right: 5)
+        layout.minimumInteritemSpacing = 5
         
         getAllImages()
         //hasPreviousImages()
         
-        
-        let layout = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.sectionInset = UIEdgeInsets.init(top: 0,left: 5,bottom: 0,right: 5)
-        layout.minimumInteritemSpacing = 5
     }
 
     override func didReceiveMemoryWarning() {
